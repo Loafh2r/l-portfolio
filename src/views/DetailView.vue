@@ -388,11 +388,11 @@ const chartOption = computed(() => {
 .tx-list { display: flex; flex-direction: column; }
 .tx-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--color-border); }
 .tx-item:last-child { border-bottom: none; }
-.tx-date { font-size: 13px; color: var(--color-text-secondary); font-family: var(--font-mono); min-width: 90px; }
-.tx-info { flex: 1; display: flex; gap: 8px; align-items: center; }
-.tx-price { font-size: 14px; font-weight: 600; font-family: var(--font-mono); }
-.tx-qty { font-size: 12px; color: var(--color-text-muted); }
-.tx-total { font-size: 14px; font-weight: 600; font-family: var(--font-mono); text-align: right; }
+.tx-date { font-size: 13px; color: var(--color-text-secondary); font-family: var(--font-mono); width: 82px; flex-shrink: 0; }
+.tx-info { flex: 1; display: flex; gap: 6px; align-items: center; min-width: 0; }
+.tx-price { font-size: 14px; font-weight: 600; font-family: var(--font-mono); width: 72px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; }
+.tx-qty { font-size: 12px; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+.tx-total { font-size: 14px; font-weight: 600; font-family: var(--font-mono); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .tx-del-btn { background: none; border: none; font-size: 12px; color: var(--color-text-muted); cursor: pointer; padding: 4px 6px; margin-left: 8px; opacity: 0.4; transition: opacity 0.15s; }
 .tx-del-btn:hover { opacity: 1; color: var(--color-profit); }
 .empty-state-hint { font-size: 13px; color: var(--color-text-muted); margin-top: 4px; }
