@@ -52,8 +52,56 @@ export const usePortfolioStore = defineStore(
 
     function importData(data: ExportData) {
       if (data.version !== 1) throw new Error(`不支持的数据版本: ${data.version}`)
-      investments.value = data.investments
-      transactions.value = data.transactions
+
+      // 旧 ID → 新 ID 映射
+      const idMap = new Map<string, string>()
+      let addedInv = 0
+      let addedTx = 0
+
+      for (const inv of data.investments) {
+        // 按代码查找是否已存在
+        const existing = investments.value.find((i) => i.code === inv.code)
+        if (existing) {
+          // 已存在：映射旧 ID → 现有 ID
+          idMap.set(inv.id, existing.id)
+        } else {
+          // 不存在：新建投资
+          const newInv = addInvestment({
+            code: inv.code,
+            name: inv.name,
+            type: inv.type,
+            market: inv.market,
+          })
+          idMap.set(inv.id, newInv.id)
+          addedInv++
+        }
+      }
+
+      for (const tx of data.transactions) {
+        const mappedInvId = idMap.get(tx.investmentId)
+        if (!mappedInvId) continue
+
+        // 检查是否重复（同投资、同日期、同价格、同份额）
+        const isDuplicate = transactions.value.some(
+          (t) =>
+            t.investmentId === mappedInvId &&
+            t.date === tx.date &&
+            t.price === tx.price &&
+            t.quantity === tx.quantity,
+        )
+
+        if (!isDuplicate) {
+          addTransaction({
+            investmentId: mappedInvId,
+            price: tx.price,
+            quantity: tx.quantity,
+            date: tx.date,
+          })
+          addedTx++
+        }
+      }
+
+      return { addedInv, addedTx }
     }
 
     function clearAll() {

@@ -83,9 +83,9 @@ function handleImportFile(e: Event) {
 function handleImport() {
   try {
     const data = JSON.parse(importText.value)
-    store.importData(data)
+    const result = store.importData(data)
     importText.value = ''
-    showMessage(`导入成功！${data.investments.length} 个产品`, 'success')
+    showMessage(`合并完成！新增 ${result.addedInv} 个产品，${result.addedTx} 条买入记录`, 'success')
   } catch (e) {
     showMessage(`导入失败: ${(e as Error).message}`, 'error')
   }
