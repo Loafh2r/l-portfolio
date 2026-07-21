@@ -1,28 +1,48 @@
 import { jsonp } from '@/utils/jsonp'
 
-// 判断是否开发环境（Vite 代理可用）
 const isDev = import.meta.env.DEV
 
+/** 搜索结果项 */
+export interface SearchResultItem {
+  code: string
+  name: string
+  type: 'stock' | 'etf' | 'fund'
+  market: number
+}
+
 /**
- * 搜索金融产品
- * @param keyword - 搜索关键词（代码或名称）
+ * 搜索金融产品（东方财富 suggest API）
  */
-export async function searchProduct(keyword: string) {
-  const url = isDev
-    ? '/api/search/api'
-    : 'https://searchadapter.eastmoney.com/api/search'
+export async function searchProduct(keyword: string): Promise<SearchResultItem[]> {
+  const params = `input=${encodeURIComponent(keyword)}&type=14&count=20`
 
-  const params = new URLSearchParams({
-    type: 'all',
-    keyword,
-  })
-
-  const fullUrl = `${url}?${params.toString()}`
+  let data: any
 
   if (isDev) {
-    const response = await fetch(fullUrl)
-    return response.json()
+    const res = await fetch(`/api/search?${params}`)
+    data = await res.json()
   } else {
-    return jsonp(fullUrl, 'cb')
+    data = await jsonp(
+      `https://searchapi.eastmoney.com/api/suggest/get?${params}&cb=cb`,
+      'cb',
+    )
   }
+
+  const list = data?.QuotationCodeTable?.Data
+  if (!Array.isArray(list)) return []
+
+  return list.map((item: any) => ({
+    code: item.Code,
+    name: item.Name,
+    type: mapProductType(item.SecurityTypeName ?? '', item.Name ?? '', item.Code ?? ''),
+    market: parseInt(item.MktNum) || 0,
+  }))
+}
+
+function mapProductType(typeName: string, name: string, code: string): 'stock' | 'etf' | 'fund' {
+  // 场内 ETF 代码特征优先
+  if (/^(51|15|16)\d{4}$/.test(code)) return 'etf'
+  if (name.includes('ETF') || typeName.includes('ETF')) return 'etf'
+  if (typeName.includes('基金')) return 'fund'
+  return 'stock'
 }

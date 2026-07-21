@@ -11,17 +11,17 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // 东方财富搜索（保留）
-      '/search': {
-        target: 'https://searchadapter.eastmoney.com',
+      // 东方财富搜索（searchapi.eastmoney.com）
+      '/api/search': {
+        target: 'https://searchapi.eastmoney.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/search/, ''),
+        rewrite: (p) => p.replace(/^\/api\/search/, '/api/suggest/get'),
       },
-      // 新浪 K 线（保留）
+      // 新浪 K 线
       '/sina': {
         target: 'https://money.finance.sina.com.cn',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/sina/, ''),
+        rewrite: (p) => p.replace(/^\/sina/, ''),
       },
     },
   },
