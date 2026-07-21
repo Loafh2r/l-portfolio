@@ -10,6 +10,11 @@ export default {
     if (url.pathname === '/api/search') {
       return proxyFetch(
         `https://searchapi.eastmoney.com/api/suggest/get${url.search}`,
+        {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+          'Referer': 'https://www.eastmoney.com/',
+        },
       )
     }
 
@@ -18,6 +23,10 @@ export default {
       const path = url.pathname.replace(/^\/sina/, '')
       return proxyFetch(
         `https://money.finance.sina.com.cn${path}${url.search}`,
+        {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        },
       )
     }
 
@@ -26,13 +35,10 @@ export default {
   },
 }
 
-async function proxyFetch(targetUrl: string): Promise<Response> {
+async function proxyFetch(targetUrl: string, customHeaders: Record<string, string> = {}): Promise<Response> {
   try {
     const response = await fetch(targetUrl, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
+      headers: customHeaders,
     })
     // 直接用 arrayBuffer 保持原始字节，避免编码转换问题
     const data = await response.arrayBuffer()
