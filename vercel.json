@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/search",
+      "destination": "https://searchapi.eastmoney.com/api/suggest/get"
+    },
+    {
+      "source": "/sina/:path*",
+      "destination": "https://money.finance.sina.com.cn/:path*"
+    }
+  ]
+}
