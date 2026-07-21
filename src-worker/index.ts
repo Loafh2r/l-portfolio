@@ -1,5 +1,9 @@
+interface Env {
+  ASSETS: { fetch: (request: Request) => Promise<Response> }
+}
+
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
 
     // 代理: 东方财富搜索
@@ -17,8 +21,8 @@ export default {
       )
     }
 
-    // 其他请求由 assets 处理（静态文件）
-    return new Response(null, { status: 404 })
+    // 其他请求交给静态资源
+    return env.ASSETS.fetch(request)
   },
 }
 
