@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://searchapi.eastmoney.com/api/search/api?type=all&keyword=510300\")",
+      "Bash(curl -s \"https://searchapi.eastmoney.com/api/suggest/api?type=all&keyword=510300\")",
+      "Bash(curl -s \"https://searchadapter.eastmoney.com/search/api?type=all&keyword=510300\")",
+      "Bash(curl -s \"https://searchadapter.eastmoney.com/search?type=all&keyword=510300\")",
+      "Bash(curl -s -I \"https://searchadapter.eastmoney.com/\")",
+      "Bash(curl -s \"https://searchadapter.eastmoney.com/suggest/get?type=all&keyword=510300\")",
+      "Bash(curl -s \"https://searchapi.eastmoney.com/api/suggest/get?type=all&keyword=510300\")",
+      "Bash(curl -s \"https://searchapi.eastmoney.com/api/Search/SearchCom?type=all&keyword=510300\")",
+      "Bash(curl -s \"https://searchapi.eastmoney.com/api/suggest/get?input=510300&type=14&token=D43BF722C8E33BDC906FB84D85E326E8&count=10\")",
+      "Bash(curl -s \"https://searchapi.eastmoney.com/api/suggest/get?input=510300&type=14&count=10\")",
+      "Bash(curl -s \"https://searchadapter.eastmoney.com/api/suggest/get?input=510300&type=14&token=D43BF722C8E33BDC906FB84D85E326E8&count=10\")"
+    ]
+  }
+}
