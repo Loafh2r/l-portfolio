@@ -72,6 +72,8 @@ body {
 
 .page-container {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 20px 16px;
   padding-bottom: 88px;
   max-width: 540px;

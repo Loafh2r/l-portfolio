@@ -109,6 +109,20 @@ function showMessage(msg: string, type: 'success' | 'error') {
       {{ message }}
     </div>
 
+    <!-- 导入导出 -->
+    <div class="card data-section">
+      <h2 class="section-title">💾 数据管理</h2>
+      <div class="data-actions">
+        <button class="btn btn-ghost" @click="handleExport">📤 导出 JSON</button>
+        <label class="btn btn-ghost import-label">
+          📥 导入 JSON
+          <input type="file" accept=".json" @change="handleImportFile" style="display:none" />
+        </label>
+      </div>
+      <textarea v-if="importText" v-model="importText" class="input import-textarea" rows="4" placeholder="或粘贴 JSON..."></textarea>
+      <button v-if="importText" class="btn btn-primary btn-sm" style="margin-top:8px" @click="handleImport">确认导入</button>
+    </div>
+
     <div v-if="!store.investments.length" class="empty-state">
       <div class="empty-state-icon">🏦</div>
       <p class="empty-state-text">还没有投资产品</p>
@@ -175,20 +189,6 @@ function showMessage(msg: string, type: 'success' | 'error') {
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- 导入导出 -->
-    <div class="card data-section" v-if="store.investments.length">
-      <h2 class="section-title">💾 数据管理</h2>
-      <div class="data-actions">
-        <button class="btn btn-ghost" @click="handleExport">📤 导出 JSON</button>
-        <label class="btn btn-ghost import-label">
-          📥 导入 JSON
-          <input type="file" accept=".json" @change="handleImportFile" style="display:none" />
-        </label>
-      </div>
-      <textarea v-if="importText" v-model="importText" class="input import-textarea" rows="4" placeholder="或粘贴 JSON..."></textarea>
-      <button v-if="importText" class="btn btn-primary btn-sm" style="margin-top:8px" @click="handleImport">确认导入</button>
     </div>
   </div>
 </template>
