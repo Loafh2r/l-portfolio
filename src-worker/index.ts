@@ -34,10 +34,11 @@ async function proxyFetch(targetUrl: string): Promise<Response> {
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
     })
-    const data = await response.text()
+    // 直接用 arrayBuffer 保持原始字节，避免编码转换问题
+    const data = await response.arrayBuffer()
     return new Response(data, {
       headers: {
-        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Type': response.headers.get('Content-Type') || 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
       },
     })
